@@ -1,12 +1,9 @@
 import time
-
-from misc import *
 from lexer import *
 
 
 class VM:
     def __init__(self, path):
-
         self.program_path = path
         self.mem = self.read_vol(path)
 
