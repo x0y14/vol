@@ -19,7 +19,7 @@ class VM:
         self.reg_c = 0
 
     def state(self):
-        print(f"VM {{ reg_a: {self.reg_a}, reg_b: {self.reg_b}, reg_c: {self.reg_c}, pc: {self.pc}, zf: {self.zf}")
+        print(f"VM {{ reg_a: {self.reg_a}, reg_b: {self.reg_b}, reg_c: {self.reg_c}, pc: {self.pc}, zf: {self.zf} }}")
 
     def read_vol(self, path):
         with open(path, "r") as f:
