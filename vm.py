@@ -56,6 +56,13 @@ class VM:
                 self.compare_a_and_b()
                 self.pc += 1
 
+            elif op == "jump_eq":
+                addr = self.mem[self.pc + 1]
+                if self.zf == 1:
+                    self.pc = addr
+                else:
+                    self.pc += 2
+
             elif op == "jump":
                 addr = self.mem[self.pc + 1]
                 self.pc = addr
