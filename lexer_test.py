@@ -15,6 +15,16 @@ class LexerTest(unittest.TestCase):
         self.assertEqual(["add", 5.4], lex('add 5.4'))
         self.assertEqual(["add", "5.4"], lex('add \"5.4\"'))
 
+    def test_lex_vol(self):
+        with open("if.vol", "r") as f:
+            program = f.read()
+        lx = Lexer(program)
+        tokens = lx.lex()
+        for t in tokens:
+            print(t.string())
+            if t.typ == TokenType.NEWLINE:
+                print()
+
 
 if __name__ == '__main__':
     unittest.main()
