@@ -1,13 +1,14 @@
 import time
 
 from misc import *
+from lexer import *
 
 
 class VM:
     def __init__(self, path):
 
         self.program_path = path
-        self.mem = []
+        self.mem = self.read_vol(path)
 
         # program counter
         self.pc = 0
@@ -23,7 +24,7 @@ class VM:
     def read_vol(self, path):
         with open(path, "r") as f:
             program = f.read()
-        return []
+        return lex(program)
 
     def start(self):
         while True:
