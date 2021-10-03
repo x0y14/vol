@@ -17,7 +17,7 @@ def type_convert(token):
     if token == "":
         return token
     if token[0] == "#":
-        print(f"$comment : {token}")
+        # print(f"$comment : {token}")
         return ""
 
     if includeNumber(token) and include(token, ".") and not include(token, ["\"", "\'"]):
