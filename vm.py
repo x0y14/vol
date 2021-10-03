@@ -36,6 +36,11 @@ class VM:
                 self.reg_b = n
                 self.pc += 2
 
+            elif op == "set_reg_c":
+                n = self.mem[self.pc+1]
+                self.reg_c = n
+                self.pc += 2
+
             elif op == "add_b_to_a":
                 self.add_b_to_a()
                 self.pc += 1
