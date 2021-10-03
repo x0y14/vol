@@ -1,8 +1,10 @@
+import sys
 from vm import VM
 
 
 def main():
-    vm = VM("./program.vol")
+    filepath = sys.argv[1]
+    vm = VM(filepath)
     vm.start()
 
 
