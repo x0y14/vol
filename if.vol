@@ -1,0 +1,35 @@
+###(__set_values)
+#0,1:
+set_reg_a 0
+
+#2,3:
+set_reg_b 0
+
+
+###(__if_else)
+#4:
+compare_a_and_b
+#5,6:
+jump_eq 9
+
+
+###(__else)
+#7,8:
+set_reg_c 3
+
+###(__goto_last)
+#9,10:
+jump 13
+
+
+###(__if)
+#11,12:
+set_reg_c 2
+
+
+###(__last)
+#13,14:
+set_reg_a 4
+
+
+exit
