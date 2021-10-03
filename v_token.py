@@ -20,6 +20,8 @@ class TokenType(IntEnum):
     # !@#$%^&*()_-+={}[]
     SYMBOL = auto()
 
+    EOF = auto()
+
 
 def TokenType_string(tktyp: TokenType):
     if tktyp == TokenType.ILLEGAL:
@@ -44,6 +46,8 @@ def TokenType_string(tktyp: TokenType):
         return "WHITESPACE"
     elif tktyp == TokenType.SYMBOL:
         return "SYMBOL"
+    elif tktyp == TokenType.EOF:
+        return "EOF"
 
 
 class Token:
