@@ -55,5 +55,5 @@ class VM:
     def copy_reg_c_to_mem(self, addr):
         self.mem[addr] = self.reg_c
 
-    def add_ab(self):
-        self.reg_c = self.reg_a + self.reg_b
+    def add_b_to_a(self):
+        self.reg_a += self.reg_b
