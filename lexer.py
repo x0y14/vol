@@ -213,6 +213,11 @@ class Lexer:
         e_pos = self.pos
         return Token(TokenType.ILLEGAL, char, s_pos, e_pos)
 
+    def consume_eof(self):
+        s_pos = self.pos
+        e_pos = self.pos + 1
+        return Token(TokenType.EOF, "", s_pos, e_pos)
+
     def lex(self) -> List[Token]:
         tokens = []
         while not self.is_eof():
@@ -224,11 +229,12 @@ class Lexer:
             elif is_symbol(char):
                 tokens.append(self.consume_symbol())
             elif is_whitespace(char):
-                tokens.append(self.consume_whitespace())
+                _ = self.consume_whitespace()
             elif is_newline(char):
                 tokens.append(self.consume_newline())
             elif char.isalpha() or char == "_":
                 tokens.append(self.consume_keyword())
             else:
                 tokens.append(self.consume_illegal())
+        tokens.append(self.consume_eof())
         return tokens
