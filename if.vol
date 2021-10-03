@@ -10,7 +10,7 @@ set_reg_b 0
 #4:
 compare_a_and_b
 #5,6:
-jump_eq 9
+jump_eq 11
 
 
 ###(__else)
