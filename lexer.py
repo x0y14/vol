@@ -14,6 +14,12 @@ def removeQuotation(token):
 
 
 def type_convert(token):
+    if token == "":
+        return token
+    if token[0] == "#":
+        print(f"$comment : {token}")
+        return ""
+
     if includeNumber(token) and include(token, ".") and not include(token, ["\"", "\'"]):
         return float(token)
     elif includeNumber(token) and include(token, ".") and include(token, ["\"", "\'"]):
@@ -36,7 +42,9 @@ def lex(text):
     while not pos >= len(letters):
         c = str(letters[pos])
         if c.isspace():
-            tokens.append(type_convert(token))
+            tok = type_convert(token)
+            if tok != "":
+                tokens.append(tok)
             token = ""
         else:
             token += c
