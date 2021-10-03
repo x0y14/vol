@@ -15,9 +15,10 @@ class VM:
 
         # memory
         self.mem = [
-            "set_reg_a", 1,
             "set_reg_a", 0,
-            "jump", 0,
+            "set_reg_b", 1,
+            "add_b_to_a",
+            "jump", 4,
             "exit",
         ]
 
