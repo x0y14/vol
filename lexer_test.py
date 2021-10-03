@@ -15,15 +15,6 @@ class LexerTest(unittest.TestCase):
         self.assertEqual(["add", 5.4], lex('add 5.4'))
         self.assertEqual(["add", "5.4"], lex('add \"5.4\"'))
 
-        with open("./program.vol", "r") as f:
-            program = f.read()
-        self.assertEqual(
-            ["set_reg_a", 0,
-             "set_reg_b", 1,
-             "add_b_to_a",
-             "jump", 4,
-             "exit"], lex(program))
-
 
 if __name__ == '__main__':
     unittest.main()
