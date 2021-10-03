@@ -19,7 +19,6 @@ __if_else:
 __else:
   set_reg_c 3 # [7, 8]
 
-
 __goto_last:
   jump __last # [9, 10]
 
