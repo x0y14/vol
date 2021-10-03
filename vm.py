@@ -37,6 +37,10 @@ class VM:
                 self.reg_b = n
                 self.pc += 2
 
+            elif op == "add_b_to_a":
+                self.add_b_to_a()
+                self.pc += 1
+
             elif op == "jump":
                 addr = self.mem[self.pc + 1]
                 self.pc = addr
