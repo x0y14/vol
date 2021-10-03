@@ -31,9 +31,16 @@ class VM:
                 n = self.mem[self.pc+1]
                 self.reg_a = n
                 self.pc += 2
+
+            elif op == "set_reg_b":
+                n = self.mem[self.pc+1]
+                self.reg_b = n
+                self.pc += 2
+
             elif op == "jump":
                 addr = self.mem[self.pc + 1]
                 self.pc = addr
+
             elif op == "exit":
                 print("VM exit")
                 break
