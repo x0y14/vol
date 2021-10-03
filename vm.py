@@ -4,7 +4,11 @@ from misc import *
 
 
 class VM:
-    def __init__(self):
+    def __init__(self, path):
+
+        self.program_path = path
+        self.mem = []
+
         # program counter
         self.pc = 0
 
@@ -13,17 +17,13 @@ class VM:
         self.reg_b = 0
         self.reg_c = 0
 
-        # memory
-        self.mem = [
-            "set_reg_a", 0,
-            "set_reg_b", 1,
-            "add_b_to_a",
-            "jump", 4,
-            "exit",
-        ]
-
     def state(self):
         print(f"VM {{ reg_a: {self.reg_a}, reg_b: {self.reg_b}, reg_c: {self.reg_c}, mem: {self.mem} }}, pc: {self.pc}")
+
+    def read_vol(self, path):
+        with open(path, "r") as f:
+            program = f.read()
+        return []
 
     def start(self):
         while True:
