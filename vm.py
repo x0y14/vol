@@ -10,6 +10,9 @@ class VM:
         # program counter
         self.pc = 0
 
+        # zero flag
+        self.zf = 0
+
         # register
         self.reg_a = 0
         self.reg_b = 0
