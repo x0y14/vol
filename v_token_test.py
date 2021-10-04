@@ -167,6 +167,5 @@ class TokenTest(unittest.TestCase):
                     raise Exception(f"expect: {expect[i].string()}\nactual: {actual[i].string()}")
 
 
-
 if __name__ == '__main__':
     unittest.main()
