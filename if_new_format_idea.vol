@@ -30,5 +30,5 @@ __if:
 __last:
   set_reg_a 4 # [13, 14]
 
-__exit:
+#__exit:
   exit # [15]
