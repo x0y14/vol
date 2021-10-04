@@ -20,6 +20,8 @@ class TokenType(IntEnum):
     # !@#$%^&*()_-+={}[]
     SYMBOL = auto()
 
+    COMMENT = auto()
+
     EOF = auto()
 
 
@@ -46,6 +48,8 @@ def TokenType_string(tktyp: TokenType):
         return "WHITESPACE"
     elif tktyp == TokenType.SYMBOL:
         return "SYMBOL"
+    elif tktyp == TokenType.COMMENT:
+        return "COMMENT"
     elif tktyp == TokenType.EOF:
         return "EOF"
 

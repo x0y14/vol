@@ -199,12 +199,28 @@ class Lexer:
 
         return Token(TokenType.STRING, string, s_pos, e_pos)
 
+    def consume_comment(self):
+        s_pos = self.pos
+        comment = ""
+        while not self.is_eof():
+            tk = self.curt()
+            if is_newline(tk):
+                break
+            else:
+                comment += tk
+            self.go_next()
+        e_pos = self.pos
+        return Token(TokenType.COMMENT, comment, s_pos, e_pos)
+
     def consume_symbol(self):
         s_pos = self.pos
         char = self.curt()
-        self.go_next()
-        e_pos = self.pos
-        return Token(TokenType.SYMBOL, char, s_pos, e_pos)
+        if char == "#":
+            return self.consume_comment()
+        else:
+            self.go_next()
+            e_pos = self.pos
+            return Token(TokenType.SYMBOL, char, s_pos, e_pos)
 
     def consume_illegal(self):
         s_pos = self.pos
