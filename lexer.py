@@ -243,7 +243,9 @@ class Lexer:
             elif is_digit(char):
                 tokens.append(self.consume_numeric())
             elif is_symbol(char):
-                tokens.append(self.consume_symbol())
+                sym = self.consume_symbol()
+                if sym.typ != TokenType.COMMENT:
+                    tokens.append(sym)
             elif is_whitespace(char):
                 _ = self.consume_whitespace()
             elif is_newline(char):

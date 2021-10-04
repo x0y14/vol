@@ -1,5 +1,9 @@
 # name: args count
-commands = {
+from typing import List
+
+from v_token import *
+
+Commands = {
     "set_reg_a": 1,
     "set_reg_b": 1,
     "set_reg_c": 1,
@@ -17,7 +21,18 @@ commands = {
 
 
 class Operation:
-    def __init__(self, command: str, args, label=""):
-        self.command = command
-        self.args = args,
-        self.label = label
+    def __init__(self, command: str, args: List[Token], label: str = ""):
+        self.command: str = command
+        self.args: List[Token] = args
+        self.label: str = label
+
+    def string(self):
+        a = "[ "
+        for arg in self.args:
+            a += arg.data
+        a += " ]"
+        return "label: {label:20} | command: {command:20} | args: {args!r:20}".format(
+            command=self.command,
+            args=a,
+            label=self.label
+        )
