@@ -74,7 +74,7 @@ class Parser:
 
         for i in range(args_count):
             arg = self.curt()
-            print(f"arg: {arg.string()}")
+            # print(f"arg: {arg.string()}")
             args.append(arg)
             self.go_next()
 
@@ -99,9 +99,9 @@ class Parser:
             else:
                 self.go_next()
 
-            print(tk.string())
-            if tk.typ == TokenType.NEWLINE:
-                print()
+            # print(tk.string())
+            # if tk.typ == TokenType.NEWLINE:
+            #     print()
 
         return ops
 

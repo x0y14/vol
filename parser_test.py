@@ -10,10 +10,10 @@ class MyTestCase(unittest.TestCase):
             program = f.read()
         lx = Lexer(program)
         tokens = lx.lex()
-        for t in tokens:
-            print(t.string())
-            if t.typ == TokenType.NEWLINE:
-                print()
+        # for t in tokens:
+        #     print(t.string())
+        #     if t.typ == TokenType.NEWLINE:
+        #         print()
         ps = Parser(tokens)
         ops = ps.parse()
         for op in ops:
