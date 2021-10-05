@@ -1,10 +1,10 @@
 # labelは直後の命令にセットされます。
 
-set_reg_b 1 # 0
-call sub # 1
-set_reg_b 3 # 2
-exit # 3
+set_reg_b 1 # [0, 1]
+call sub # [2, 3]
+set_reg_b 3 # [4, 5]
+exit # [6, ]
 
 sub:
-  set_reg_a 2 # 4
-  ret # 5
+  set_reg_a 2 # [7, 8]
+  ret # [9, ]

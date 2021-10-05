@@ -4,31 +4,31 @@
 
 
 __set_values:
-  set_reg_a 0 # 0
-  set_reg_b 0 # 1
+  set_reg_a 0 # [0, 1]
+  set_reg_b 0 # [2, 3]
 
 
 __if_else:
   ## if (a == b) -> set_reg_c = 2
   ## else        -> set_reg_c = 3
 
-  compare_a_and_b # 2    # if(a == b) {zf = 1}; else {zf = 0}
-  jump_eq __if # 3     # if(zf == 1) {goto __if(6)} else {goto __else(4)}
+  compare_a_and_b # [4]    # if(a == b) {zf = 1}; else {zf = 0}
+  jump_eq __if # [5, 6]    # if(zf == 1) {goto __if(6)} else {goto __else(4)}
 
 
 __else:
-  set_reg_c 3 # 4
+  set_reg_c 3 # [7, 8]
 
 __goto_last:
-  jump __last # 5
+  jump __last # [9, 10]
 
 
 __if:
-  set_reg_c 2 # 6
+  set_reg_c 2 # [11, 12]
 
 
 __last:
-  set_reg_a 4 # 7
+  set_reg_a 4 # [13, 14]
 
 __exit:
-  exit # 8
+  exit # [15]
