@@ -25,7 +25,7 @@ class VM:
 
     def state(self, command, before=True):
         if before:
-            print("[RESULT]  VM.{:20} {{ reg_a: {:3}, reg_b: {:3}, reg_c: {:3}, pc: {:3}, zf: {} }}".format(
+            print("VM.{:20} {{ reg_a: {:3}, reg_b: {:3}, reg_c: {:3}, pc: {:3}, zf: {} }}".format(
                 command, self.reg_a, self.reg_b, self.reg_c, self.pc, self.zf), end="")
         else:
             print(" -> {{ reg_a: {:3}, reg_b: {:3}, reg_c: {:3}, pc: {:3}, zf: {} }}".format(
@@ -117,6 +117,7 @@ class VM:
     #         self.state(op.command)
 
     def start(self):
+        print("vm:")
         while True:
             op = self.mem[self.pc]
             if op == "set_reg_a":
