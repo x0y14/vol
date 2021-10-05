@@ -5,7 +5,7 @@ from vm import VM
 def main():
     filepath = sys.argv[1]
     vm = VM(filepath)
-    vm.start()
+    vm.start_with_ops()
 
 
 if __name__ == '__main__':
