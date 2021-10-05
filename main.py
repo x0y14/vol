@@ -8,7 +8,7 @@ def main():
 
     # exec
     vm = VM(filepath)
-    vm.start_with_ops()
+    vm.start()
 
 
 if __name__ == '__main__':
