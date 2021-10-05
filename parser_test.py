@@ -6,7 +6,7 @@ from v_token import *
 
 class MyTestCase(unittest.TestCase):
     def test_something(self):
-        with open("if_new_format_idea.vol", "r") as f:
+        with open("programs/if_else.vol", "r") as f:
             program = f.read()
         lx = Lexer(program)
         tokens = lx.lex()

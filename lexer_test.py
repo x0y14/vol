@@ -16,7 +16,7 @@ class LexerTest(unittest.TestCase):
         self.assertEqual(["add", "5.4"], lex('add \"5.4\"'))
 
     def test_lex_vol(self):
-        with open("if_new_format_idea.vol", "r") as f:
+        with open("programs/if_else.vol", "r") as f:
             program = f.read()
         lx = Lexer(program)
         tokens = lx.lex()
