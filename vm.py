@@ -7,10 +7,10 @@ from v_operation import *
 class VM:
     def __init__(self, path):
         self.program_path = path
-        # self.mem = self.read_vol(path)
-        self.mem_ops: List[Operation] = self.read_vol_as_ops(path)
+        self.mem = self.read_vol(path)
+        # self.mem_ops: List[Operation] = self.read_vol_as_ops(path)
         self.mem_ops_mapping = {}
-        self.mapping_ops()
+        # self.mapping_ops()
 
         # program counter
         self.pc = 0
@@ -23,9 +23,13 @@ class VM:
         self.reg_b = 0
         self.reg_c = 0
 
-    def state(self, command):
-        print("[RESULT]  VM.{:20} {{ reg_a: {:3}, reg_b: {:3}, reg_c: {:3}, pc: {:3}, zf: {} }}".format(
-            command, self.reg_a, self.reg_b, self.reg_c, self.pc, self.zf))
+    def state(self, command, before=True):
+        if before:
+            print("VM.{:20} {{ reg_a: {:3}, reg_b: {:3}, reg_c: {:3}, pc: {:3}, zf: {} }}".format(
+                command, self.reg_a, self.reg_b, self.reg_c, self.pc, self.zf), end="")
+        else:
+            print(" -> {{ reg_a: {:3}, reg_b: {:3}, reg_c: {:3}, pc: {:3}, zf: {} }}".format(
+                self.reg_a, self.reg_b, self.reg_c, self.pc, self.zf))
 
     def mov_pc(self, n):
         self.pc += n
@@ -35,13 +39,13 @@ class VM:
             program = f.read()
         return lex(program)
 
-    def read_vol_as_ops(self, path) -> List[Operation]:
-        with open(path, "r") as f:
-            program = f.read()
-        lx = Lexer(program)
-        tokens = lx.lex()
-        ps = Parser(tokens)
-        return ps.parse()
+    # def read_vol_as_ops(self, path) -> List[Operation]:
+    #     with open(path, "r") as f:
+    #         program = f.read()
+    #     lx = Lexer(program)
+    #     tokens = lx.lex()
+    #     ps = Parser(tokens)
+    #     return ps.parse()
 
     def mapping_ops(self):
         i = 0
@@ -51,56 +55,69 @@ class VM:
             i += 1
         print(f"label-mapping : {self.mem_ops_mapping}")
 
-    def start_with_ops(self):
-        self.state("start_with_ops")
-        while True:
-            op = self.mem_ops[self.pc]
-            if op.command == "set_reg_a":
-                n = op.args[0]
-                self.reg_a = n
-                self.mov_pc(1)
-
-            elif op.command == "set_reg_b":
-                n = op.args[0]
-                self.reg_b = n
-                self.mov_pc(1)
-
-            elif op.command == "set_reg_c":
-                n = op.args[0]
-                self.reg_c = n
-                self.mov_pc(1)
-
-            elif op.command == "add_b_to_a":
-                self.add_b_to_a()
-                self.mov_pc(1)
-
-            elif op.command == "add_c_to_a":
-                self.add_c_to_a()
-                self.mov_pc(1)
-
-            elif op.command == "compare_a_and_b":
-                self.compare_a_and_b()
-                self.mov_pc(1)
-            elif op.command == "jump_eq":
-                # print(op.string())
-                # print(f"args: {op.args[0]}, addr: {self.mem_ops_mapping[op.args[0]]}")
-                addr = self.mem_ops_mapping[op.args[0]]
-                if self.zf == 1:
-                    self.pc = addr
-                else:
-                    self.mov_pc(1)
-
-            elif op.command == "jump":
-                addr = self.mem_ops_mapping[op.args[0]]
-                self.pc = addr
-            elif op.command == "exit":
-                break
-            else:
-                raise Exception(f"Unknown command: {op.string()}")
-            self.state(op.command)
+    # def start_with_ops(self):
+    #     self.state("start_with_ops")
+    #     while True:
+    #         op = self.mem_ops[self.pc]
+    #         if op.command == "set_reg_a":
+    #             n = op.args[0]
+    #             self.reg_a = n
+    #             self.mov_pc(1)
+    #
+    #         elif op.command == "set_reg_b":
+    #             n = op.args[0]
+    #             self.reg_b = n
+    #             self.mov_pc(1)
+    #
+    #         elif op.command == "set_reg_c":
+    #             n = op.args[0]
+    #             self.reg_c = n
+    #             self.mov_pc(1)
+    #
+    #         elif op.command == "add_b_to_a":
+    #             self.add_b_to_a()
+    #             self.mov_pc(1)
+    #
+    #         elif op.command == "add_c_to_a":
+    #             self.add_c_to_a()
+    #             self.mov_pc(1)
+    #
+    #         elif op.command == "compare_a_and_b":
+    #             self.compare_a_and_b()
+    #             self.mov_pc(1)
+    #         elif op.command == "jump_eq":
+    #             # print(op.string())
+    #             # print(f"args: {op.args[0]}, addr: {self.mem_ops_mapping[op.args[0]]}")
+    #             addr = self.mem_ops_mapping[op.args[0]]
+    #             if self.zf == 1:
+    #                 self.pc = addr
+    #             else:
+    #                 self.mov_pc(1)
+    #
+    #         elif op.command == "jump":
+    #             addr = self.mem_ops_mapping[op.args[0]]
+    #             self.pc = addr
+    #
+    #         elif op.command == "call":
+    #             return_addr = self.pc + 1
+    #             # set return_address
+    #             self.reg_c = return_addr
+    #
+    #             addr_we_are_going = self.mem_ops_mapping[op.args[0]]
+    #             # move
+    #             self.pc = addr_we_are_going
+    #         elif op.command == "ret":
+    #             self.pc = self.reg_c
+    #
+    #         elif op.command == "exit":
+    #             self.state(op.command)
+    #             break
+    #         else:
+    #             raise Exception(f"Unknown command: {op.string()}")
+    #         self.state(op.command)
 
     def start(self):
-        self.state("start")
+        print("vm:")
         while True:
             op = self.mem[self.pc]
             if op == "set_reg_a":
@@ -149,13 +166,26 @@ class VM:
                 addr = self.mem[self.pc + 1]
                 self.pc = addr
 
+            elif op == "call":
+                self.state(op)
+                # 帰ってくる場所は、この命令の次の命令の部分。
+                return_addr = self.pc + 2
+                self.reg_c = return_addr
+                addr_we_are_going = self.mem[self.pc + 1]
+                self.pc = addr_we_are_going
+
+            elif op == "ret":
+                self.state(op)
+                self.pc = self.reg_c
+
             elif op == "exit":
                 self.state(op)
                 break
             else:
                 raise f"Unknown operator({op})"
 
-            time.sleep(0.5)
+            self.state("", False)
+            time.sleep(0.2)
 
     def set_mem(self, addr, n):
         self.mem[addr] = n

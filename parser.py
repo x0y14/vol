@@ -1,6 +1,7 @@
 from typing import List
 from v_token import Token, TokenType, TokenType_string
 from v_operation import *
+from v_command import *
 
 
 class Parser:
