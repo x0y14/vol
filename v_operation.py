@@ -16,6 +16,9 @@ Commands = {
     "jump": 1,
     "jump_eq": 1,
 
+    "call": 1,
+    "ret": 0,
+
     "exit": 0,
 }
 

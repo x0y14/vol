@@ -1,0 +1,10 @@
+# labelは直後の命令にセットされます。
+
+set_reg_b 1 # 0
+call sub # 1
+set_reg_b 3 # 2
+exit # 3
+
+sub:
+  set_reg_a 2 # 4
+  ret # 5

@@ -93,7 +93,20 @@ class VM:
             elif op.command == "jump":
                 addr = self.mem_ops_mapping[op.args[0]]
                 self.pc = addr
+
+            elif op.command == "call":
+                return_addr = self.pc + 1
+                # set return_address
+                self.reg_c = return_addr
+
+                addr_we_are_going = self.mem_ops_mapping[op.args[0]]
+                # move
+                self.pc = addr_we_are_going
+            elif op.command == "ret":
+                self.pc = self.reg_c
+
             elif op.command == "exit":
+                self.state(op.command)
                 break
             else:
                 raise Exception(f"Unknown command: {op.string()}")
