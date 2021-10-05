@@ -37,6 +37,9 @@ class Compiler:
                 mapping[m["label"]] = items
             items += len(m["raw"])
         self.mapping = mapping
+        print("cpr-mapping:")
+        print(self.mapping)
+        print()
 
     # pc
     def set_pc(self, n):
@@ -64,7 +67,7 @@ class Compiler:
             lines.append({"label": op.label, "raw": [op.command, *op.args]})
 
         self.mid = lines
-        print("mid:")
+        print("cpr-mid:")
         pprint(self.mid)
         print()
 
@@ -72,24 +75,17 @@ class Compiler:
         code = ""
         no = 0
         line = ""
-        comment = ""
         for mid_ in self.mid:
             for item in mid_["raw"]:
                 # print("({:3}) ".format(no), end="")
                 if item in self.mapping:
                     line += "{} ".format(self.mapping[item])
-                    comment += f"{item}={self.mapping[item]}"
                 else:
                     line += "{} ".format(item)
                 no += 1
 
-            code += line
-            if comment != "":
-                code += "# " + comment + "\n"
-            else:
-                code += "\n"
+            code += line + "\n"
             line = ""
-            comment = ""
 
         return code
 
