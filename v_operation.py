@@ -21,15 +21,15 @@ Commands = {
 
 
 class Operation:
-    def __init__(self, command: str, args: List[Token], label: str = ""):
+    def __init__(self, command: str, args: List, label: str = ""):
         self.command: str = command
-        self.args: List[Token] = args
+        self.args: List = args
         self.label: str = label
 
     def string(self):
         a = "[ "
         for arg in self.args:
-            a += arg.data
+            a += arg
         a += " ]"
         return "label: {label:20} | command: {command:20} | args: {args!r:20}".format(
             command=self.command,

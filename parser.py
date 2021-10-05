@@ -75,7 +75,22 @@ class Parser:
         for i in range(args_count):
             arg = self.curt()
             # print(f"arg: {arg.string()}")
-            args.append(arg)
+            if arg.typ == TokenType.INT:
+                args.append(int(arg.data))
+            elif arg.typ == TokenType.FLOAT:
+                args.append(float(arg.data))
+            elif arg.typ == TokenType.STRING:
+                args.append(str(arg.data))
+            elif arg.typ == TokenType.TRUE:
+                args.append(True)
+            elif arg.typ == TokenType.FALSE:
+                args.append(False)
+            elif arg.typ == TokenType.NULL:
+                args.append(None)
+            elif arg.typ == TokenType.IDENT:
+                args.append(str(arg.data))
+            else:
+                args.append(arg)
             self.go_next()
 
         nl = self.curt()
