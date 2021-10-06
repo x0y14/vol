@@ -1,9 +1,11 @@
 import sys
 from vm import VM
 from compiler import Compiler
+from memory import *
 
 
 def main():
+    # prepare compiler
     filepath = sys.argv[1]
     asm_path = sys.argv[2]
     cpr = Compiler(filepath)
@@ -13,8 +15,10 @@ def main():
     with open(asm_path, "w") as f:
         f.write(code)
 
-    # exec
-    vm = VM(asm_path)
+    # prepare virtual machine
+    # - create memory
+    mem = Memory()
+    vm = VM(asm_path, mem)
     vm.start()
 
 

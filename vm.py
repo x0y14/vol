@@ -2,18 +2,20 @@ import time
 from lexer import *
 from parser import Parser
 from v_operation import *
+from memory import *
 
 
 class VM:
-    def __init__(self, path):
+    def __init__(self, path, mem: Memory):
         self.program_path = path
 
         # memory
-        self.mem = self.read_vol(path)
+        self.mem = mem
+        self.mem.main.extend(self.read_vol(path))
         self.mem_ops_mapping = {}
 
         # stack
-        self.stack = []
+        # self.mem.stack = []
 
         # program counter
         self.pc = 0
@@ -28,7 +30,7 @@ class VM:
 
     # stack pointer
     def sp(self) -> int:
-        return len(self.stack) - 1
+        return len(self.mem.stack) - 1
 
     def state(self, command, before=True):
         if before:
@@ -126,22 +128,22 @@ class VM:
     def start(self):
         print("vm:")
         while True:
-            op = self.mem[self.pc]
+            op = self.mem.main[self.pc]
             if op == "set_reg_a":
                 self.state(op)
-                n = self.mem[self.pc+1]
+                n = self.mem.main[self.pc+1]
                 self.reg_a = n
                 self.pc += 2
 
             elif op == "set_reg_b":
                 self.state(op)
-                n = self.mem[self.pc+1]
+                n = self.mem.main[self.pc+1]
                 self.reg_b = n
                 self.pc += 2
 
             elif op == "set_reg_c":
                 self.state(op)
-                n = self.mem[self.pc+1]
+                n = self.mem.main[self.pc+1]
                 self.reg_c = n
                 self.pc += 2
 
@@ -162,7 +164,7 @@ class VM:
 
             elif op == "jump_eq":
                 self.state(op)
-                addr = self.mem[self.pc + 1]
+                addr = self.mem.main[self.pc + 1]
                 if self.zf == 1:
                     self.pc = addr
                 else:
@@ -170,19 +172,19 @@ class VM:
 
             elif op == "jump":
                 self.state(op)
-                addr = self.mem[self.pc + 1]
+                addr = self.mem.main[self.pc + 1]
                 self.pc = addr
 
             elif op == "call":
                 self.state(op)
                 # 帰ってくる場所は、この命令の次の命令の部分。
-                self.stack.append(self.pc + 2)
-                addr_we_are_going = self.mem[self.pc + 1]
+                self.mem.stack.append(self.pc + 2)
+                addr_we_are_going = self.mem.main[self.pc + 1]
                 self.pc = addr_we_are_going
 
             elif op == "ret":
                 self.state(op)
-                return_addr = self.stack.pop()
+                return_addr = self.mem.stack.pop()
                 self.pc = return_addr
 
             elif op == "exit":
@@ -195,16 +197,16 @@ class VM:
             time.sleep(0.2)
 
     def set_mem(self, addr, n):
-        self.mem[addr] = n
+        self.mem.main[addr] = n
 
     def copy_mem_to_reg_a(self, addr):
-        self.reg_a = self.mem[addr]
+        self.reg_a = self.mem.main[addr]
 
     def copy_mem_to_reg_b(self, addr):
-        self.reg_b = self.mem[addr]
+        self.reg_b = self.mem.main[addr]
 
     def copy_reg_c_to_mem(self, addr):
-        self.mem[addr] = self.reg_c
+        self.mem.main[addr] = self.reg_c
 
     def add_b_to_a(self):
         self.reg_a += self.reg_b
