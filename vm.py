@@ -7,10 +7,13 @@ from v_operation import *
 class VM:
     def __init__(self, path):
         self.program_path = path
+
+        # memory
         self.mem = self.read_vol(path)
-        # self.mem_ops: List[Operation] = self.read_vol_as_ops(path)
         self.mem_ops_mapping = {}
-        # self.mapping_ops()
+
+        # stack
+        self.stack = []
 
         # program counter
         self.pc = 0
@@ -22,6 +25,10 @@ class VM:
         self.reg_a = 0
         self.reg_b = 0
         self.reg_c = 0
+
+    # stack pointer
+    def sp(self) -> int:
+        return len(self.stack) - 1
 
     def state(self, command, before=True):
         if before:
@@ -169,14 +176,14 @@ class VM:
             elif op == "call":
                 self.state(op)
                 # 帰ってくる場所は、この命令の次の命令の部分。
-                return_addr = self.pc + 2
-                self.reg_c = return_addr
+                self.stack.append(self.pc + 2)
                 addr_we_are_going = self.mem[self.pc + 1]
                 self.pc = addr_we_are_going
 
             elif op == "ret":
                 self.state(op)
-                self.pc = self.reg_c
+                return_addr = self.stack.pop()
+                self.pc = return_addr
 
             elif op == "exit":
                 self.state(op)

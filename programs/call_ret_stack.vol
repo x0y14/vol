@@ -1,0 +1,16 @@
+# 09 nested_call
+
+set_reg_a 1
+call sub1
+set_reg_a 5
+exit
+
+sub1:
+  set_reg_a 2
+  call sub2
+  set_reg_a 4
+  ret
+
+sub2:
+  set_reg_a 3
+  ret
