@@ -64,67 +64,6 @@ class VM:
             i += 1
         print(f"label-mapping : {self.mem_ops_mapping}")
 
-    # def start_with_ops(self):
-    #     self.state("start_with_ops")
-    #     while True:
-    #         op = self.mem_ops[self.pc]
-    #         if op.command == "set_reg_a":
-    #             n = op.args[0]
-    #             self.reg_a = n
-    #             self.mov_pc(1)
-    #
-    #         elif op.command == "set_reg_b":
-    #             n = op.args[0]
-    #             self.reg_b = n
-    #             self.mov_pc(1)
-    #
-    #         elif op.command == "set_reg_c":
-    #             n = op.args[0]
-    #             self.reg_c = n
-    #             self.mov_pc(1)
-    #
-    #         elif op.command == "add_b_to_a":
-    #             self.add_b_to_a()
-    #             self.mov_pc(1)
-    #
-    #         elif op.command == "add_c_to_a":
-    #             self.add_c_to_a()
-    #             self.mov_pc(1)
-    #
-    #         elif op.command == "compare_a_and_b":
-    #             self.compare_a_and_b()
-    #             self.mov_pc(1)
-    #         elif op.command == "jump_eq":
-    #             # print(op.string())
-    #             # print(f"args: {op.args[0]}, addr: {self.mem_ops_mapping[op.args[0]]}")
-    #             addr = self.mem_ops_mapping[op.args[0]]
-    #             if self.zf == 1:
-    #                 self.pc = addr
-    #             else:
-    #                 self.mov_pc(1)
-    #
-    #         elif op.command == "jump":
-    #             addr = self.mem_ops_mapping[op.args[0]]
-    #             self.pc = addr
-    #
-    #         elif op.command == "call":
-    #             return_addr = self.pc + 1
-    #             # set return_address
-    #             self.reg_c = return_addr
-    #
-    #             addr_we_are_going = self.mem_ops_mapping[op.args[0]]
-    #             # move
-    #             self.pc = addr_we_are_going
-    #         elif op.command == "ret":
-    #             self.pc = self.reg_c
-    #
-    #         elif op.command == "exit":
-    #             self.state(op.command)
-    #             break
-    #         else:
-    #             raise Exception(f"Unknown command: {op.string()}")
-    #         self.state(op.command)
-
     def start(self):
         print("vm:")
         while True:
