@@ -20,6 +20,9 @@ class VM:
         # program counter
         self.pc = 0
 
+        # base pointer
+        self.bp = 0
+
         # stack pointer
         self.sp = 0
 
@@ -48,6 +51,7 @@ class VM:
                 regs=[self.reg_a, self.reg_b, self.reg_c],
                 pc=self.pc,
                 zf=self.zf,
+                bp=self.bp,
                 sp=self.sp)
 
             op = self.mem.main[self.pc]
