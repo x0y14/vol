@@ -3,10 +3,11 @@ import sys
 
 
 class Memory:
-    def __init__(self, mid: dict):
+    def __init__(self, mid: dict, label_mapping: dict):
         # main memory
         self.main = []
         self.mid = mid
+        self.mapping = label_mapping
 
         # stack
         self.stack = []
@@ -39,13 +40,27 @@ class Memory:
                     is_exit = True
                 else:
                     is_exit = False
-            status += "{:3} | {:3} | {:20}\n".format(arrow, mid_line['pc'], str(mid_line['raw']))
+            status += "{:3} | {:3} | {:30}\n".format(arrow, mid_line['pc'], self.cmd_coloring(mid_line['raw']))
 
         print(status, end="")
 
         # if not is_exit:
         #     print(f"\033[{len(self.mid)+2}A", end="")
         return len(self.mid)+1, is_exit
+
+    def cmd_coloring(self, cmd) -> str:
+        if cmd[0] in ["call", "ret", "jump", "jump_eq"]:
+            # 34, 221, 242
+            # return f"\033[34m{str(cmd)}\033[0m"
+            if cmd[0] == "ret":
+                return f"\033[34m{str(cmd)}\033[0m"
+            else:
+                return f"\033[34m{str(cmd)}\033[0m => {self.mapping[cmd[1]]}"
+        if cmd[0] == "exit":
+            return f"\033[07m{str(cmd)}\033[0m"
+        if "set_reg" in cmd[0]:
+            return f"\033[32m{str(cmd)}\033[0m"
+        return str(cmd)
 
     def dump_stack(self) -> int:
         print("=== Memory (stack) ===")

@@ -15,10 +15,11 @@ def main():
     with open(asm_path, "w") as f:
         f.write(code)
     mid = cpr.mid
+    label_mapping = cpr.mapping
 
     # prepare virtual machine
     # - create memory
-    mem = Memory(mid)
+    mem = Memory(mid, label_mapping)
     # init
     vm = VM(asm_path, mem)
 
