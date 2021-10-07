@@ -46,8 +46,10 @@ class Compiler:
 
     def convert(self):
         lines = []
+        op_pc = 0
         for op in self.ops:
-            lines.append({"label": op.label, "raw": [op.command, *op.args]})
+            lines.append({"label": op.label, "raw": [op.command, *op.args], "pc": op_pc})
+            op_pc += 1 + len(op.args)
 
         self.mid = lines
         print("cpr-mid:")
@@ -79,8 +81,6 @@ if __name__ == "__main__":
     cpr = Compiler(filepath)
     cpr.convert()
     cpr.mem_mapping()
-    print(cpr.mapping)
-    print()
     code = cpr.codegen()
     with open(asm_path, "w") as f:
         f.write(code)

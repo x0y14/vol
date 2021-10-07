@@ -1,6 +1,7 @@
 import time
 from lexer import *
 from parser import Parser
+from v_command import Commands
 from v_operation import *
 from memory import *
 
@@ -12,10 +13,10 @@ class VM:
         # memory
         self.mem = mem
         self.mem.main.extend(self.read_vol(path))
-        self.mem_ops_mapping = {}
+        # self.mem.main_mapping()
 
         # stack
-        # self.mem.stack = []
+        # self.mem.stack
 
         # program counter
         self.pc = 0
@@ -32,13 +33,14 @@ class VM:
     def sp(self) -> int:
         return len(self.mem.stack) - 1
 
-    def state(self, command, before=True):
-        if before:
-            print("VM.{:20} {{ reg_a: {:3}, reg_b: {:3}, reg_c: {:3}, pc: {:3}, zf: {} }}".format(
-                command, self.reg_a, self.reg_b, self.reg_c, self.pc, self.zf), end="")
-        else:
-            print(" -> {{ reg_a: {:3}, reg_b: {:3}, reg_c: {:3}, pc: {:3}, zf: {} }}".format(
-                self.reg_a, self.reg_b, self.reg_c, self.pc, self.zf))
+    # def state(self, command, before=True):
+        # if before:
+        #     print("VM.{:20} {{ reg_a: {:3}, reg_b: {:3}, reg_c: {:3}, pc: {:3}, zf: {} }}".format(
+        #         command, self.reg_a, self.reg_b, self.reg_c, self.pc, self.zf), end="")
+        # else:
+        #     print(" -> {{ reg_a: {:3}, reg_b: {:3}, reg_c: {:3}, pc: {:3}, zf: {} }}".format(
+        #         self.reg_a, self.reg_b, self.reg_c, self.pc, self.zf))
+        # print()
 
     def mov_pc(self, n):
         self.pc += n
@@ -48,61 +50,55 @@ class VM:
             program = f.read()
         return lex(program)
 
-    # def read_vol_as_ops(self, path) -> List[Operation]:
-    #     with open(path, "r") as f:
-    #         program = f.read()
-    #     lx = Lexer(program)
-    #     tokens = lx.lex()
-    #     ps = Parser(tokens)
-    #     return ps.parse()
-
-    def mapping_ops(self):
-        i = 0
-        for op in self.mem_ops:
-            if op.label != "":
-                self.mem_ops_mapping[op.label] = i
-            i += 1
-        print(f"label-mapping : {self.mem_ops_mapping}")
-
-    def start(self):
-        print("vm:")
+    def start(self, step_debug=False):
+        if step_debug:
+            print("Step Debug >> Press enter to next: step...")
+        print("vm:\n")
         while True:
+            # self.mem.dump_main(self.pc)
+            # self.mem.dump_stack()
+            self.mem.dump(
+                regs=[self.reg_a, self.reg_b, self.reg_c],
+                pc=self.pc,
+                zf=self.zf,
+                sp=self.sp())
+
             op = self.mem.main[self.pc]
             if op == "set_reg_a":
-                self.state(op)
+                # self.state(op)
                 n = self.mem.main[self.pc+1]
                 self.reg_a = n
                 self.pc += 2
 
             elif op == "set_reg_b":
-                self.state(op)
+                # self.state(op)
                 n = self.mem.main[self.pc+1]
                 self.reg_b = n
                 self.pc += 2
 
             elif op == "set_reg_c":
-                self.state(op)
+                # self.state(op)
                 n = self.mem.main[self.pc+1]
                 self.reg_c = n
                 self.pc += 2
 
             elif op == "add_b_to_a":
-                self.state(op)
+                # self.state(op)
                 self.add_b_to_a()
                 self.pc += 1
 
             elif op == "add_c_to_a":
-                self.state(op)
+                # self.state(op)
                 self.add_c_to_a()
                 self.pc += 1
 
             elif op == "compare_a_and_b":
-                self.state(op)
+                # self.state(op)
                 self.compare_a_and_b()
                 self.pc += 1
 
             elif op == "jump_eq":
-                self.state(op)
+                # self.state(op)
                 addr = self.mem.main[self.pc + 1]
                 if self.zf == 1:
                     self.pc = addr
@@ -110,30 +106,32 @@ class VM:
                     self.pc += 2
 
             elif op == "jump":
-                self.state(op)
+                # self.state(op)
                 addr = self.mem.main[self.pc + 1]
                 self.pc = addr
 
             elif op == "call":
-                self.state(op)
+                # self.state(op)
                 # 帰ってくる場所は、この命令の次の命令の部分。
                 self.mem.stack.append(self.pc + 2)
                 addr_we_are_going = self.mem.main[self.pc + 1]
                 self.pc = addr_we_are_going
 
             elif op == "ret":
-                self.state(op)
+                # self.state(op)
                 return_addr = self.mem.stack.pop()
                 self.pc = return_addr
 
             elif op == "exit":
-                self.state(op)
+                # self.state(op)
                 break
             else:
                 raise f"Unknown operator({op})"
 
-            self.state("", False)
-            time.sleep(0.2)
+            if step_debug:
+                input()
+            else:
+                time.sleep(0.2)
 
     def set_mem(self, addr, n):
         self.mem.main[addr] = n

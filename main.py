@@ -14,12 +14,16 @@ def main():
     code = cpr.codegen()
     with open(asm_path, "w") as f:
         f.write(code)
+    mid = cpr.mid
 
     # prepare virtual machine
     # - create memory
-    mem = Memory()
+    mem = Memory(mid)
+    # init
     vm = VM(asm_path, mem)
-    vm.start()
+
+    # lunch
+    vm.start(step_debug=True)
 
 
 if __name__ == '__main__':
