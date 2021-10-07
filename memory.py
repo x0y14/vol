@@ -6,11 +6,14 @@ class Memory:
     def __init__(self, mid: dict, label_mapping: dict):
         # main memory
         self.main = []
-        self.mid = mid
-        self.mapping = label_mapping
-
         # stack
         self.stack = []
+
+        # for debug
+        # program simple middle data
+        self.mid = mid
+        # label mapping
+        self.mapping = label_mapping
 
     def dump(self, regs, zf, sp, pc):
         l0 = self.dump_vm(regs, zf, sp)

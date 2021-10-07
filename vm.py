@@ -13,13 +13,15 @@ class VM:
         # memory
         self.mem = mem
         self.mem.main.extend(self.read_vol(path))
-        # self.mem.main_mapping()
 
         # stack
         # self.mem.stack
 
         # program counter
         self.pc = 0
+
+        # stack pointer
+        self.sp = 0
 
         # zero flag
         self.zf = 0
@@ -28,19 +30,6 @@ class VM:
         self.reg_a = 0
         self.reg_b = 0
         self.reg_c = 0
-
-    # stack pointer
-    def sp(self) -> int:
-        return len(self.mem.stack) - 1
-
-    # def state(self, command, before=True):
-        # if before:
-        #     print("VM.{:20} {{ reg_a: {:3}, reg_b: {:3}, reg_c: {:3}, pc: {:3}, zf: {} }}".format(
-        #         command, self.reg_a, self.reg_b, self.reg_c, self.pc, self.zf), end="")
-        # else:
-        #     print(" -> {{ reg_a: {:3}, reg_b: {:3}, reg_c: {:3}, pc: {:3}, zf: {} }}".format(
-        #         self.reg_a, self.reg_b, self.reg_c, self.pc, self.zf))
-        # print()
 
     def mov_pc(self, n):
         self.pc += n
@@ -55,13 +44,11 @@ class VM:
             print("Step Debug >> Press enter to next step")
         print("vm:\n")
         while True:
-            # self.mem.dump_main(self.pc)
-            # self.mem.dump_stack()
             self.mem.dump(
                 regs=[self.reg_a, self.reg_b, self.reg_c],
                 pc=self.pc,
                 zf=self.zf,
-                sp=self.sp())
+                sp=self.sp)
 
             op = self.mem.main[self.pc]
             if op == "set_reg_a":
@@ -114,12 +101,14 @@ class VM:
                 # self.state(op)
                 # 帰ってくる場所は、この命令の次の命令の部分。
                 self.mem.stack.append(self.pc + 2)
+                self.sp += 1
                 addr_we_are_going = self.mem.main[self.pc + 1]
                 self.pc = addr_we_are_going
 
             elif op == "ret":
                 # self.state(op)
                 return_addr = self.mem.stack.pop()
+                self.sp -= 1
                 self.pc = return_addr
 
             elif op == "exit":
