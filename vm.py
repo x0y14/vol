@@ -52,7 +52,7 @@ class VM:
 
     def start(self, step_debug=False):
         if step_debug:
-            print("Step Debug >> Press enter to next: step...")
+            print("Step Debug >> Press enter to next step")
         print("vm:\n")
         while True:
             # self.mem.dump_main(self.pc)
