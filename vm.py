@@ -120,6 +120,21 @@ class VM:
                 self.sp += 1
                 self.pc = return_addr
 
+            elif op == "copy_bp_to_sp":
+                self.sp = self.bp
+                self.pc += 1
+            elif op == "copy_sp_to_bp":
+                self.bp = self.sp
+                self.pc += 1
+
+            elif op == "push":
+                arg = self.mem.main[self.pc + 1]
+                if arg != "bp":
+                    raise Exception(f"push: not ye implemented ({arg})")
+                self.sp -= 1
+                self.mem.stack[self.sp] = arg
+                self.pc += 2
+
             elif op == "echo":
                 letters = self.mem.main[self.pc + 1]
                 data = str(letters)
