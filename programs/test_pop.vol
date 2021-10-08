@@ -1,0 +1,17 @@
+set_reg_a 1
+call sub
+set_reg_b 3
+exit
+
+sub:
+    push bp
+    copy_sp_to_bp
+
+    # サブルーチン本体
+    set_reg_a 2
+
+    # 後片付け
+    copy_bp_to_sp
+    pop bp
+
+    ret
