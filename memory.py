@@ -17,7 +17,7 @@ class Memory:
         self.mapping = label_mapping
 
     def dump(self, regs, zf, bp, sp, pc):
-        l0 = self.dump_vm(regs, zf, bp, sp)
+        l0 = self.dump_vm(regs, pc, zf, bp, sp)
         l1, is_exit = self.dump_main(pc)
         l2 = self.dump_stack()
         if not is_exit:
@@ -25,9 +25,9 @@ class Memory:
         else:
             print()
 
-    def dump_vm(self, regs, zf, bp, sp):
+    def dump_vm(self, regs, pc, zf, bp, sp):
         print("=== VM ===")
-        s = {"reg": {"a": regs[0], "b": regs[1], "c": regs[2]}, "bp": bp, "sp": sp, "zf": zf}
+        s = {"reg": {"a": regs[0], "b": regs[1], "c": regs[2]}, "pc": pc, "bp": bp, "sp": sp, "zf": zf}
         print(f"\033[2K\033[G{str(s)}", end="")
         return 2
 
