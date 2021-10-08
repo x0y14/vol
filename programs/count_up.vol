@@ -1,0 +1,27 @@
+echo "start"
+
+while_a_is_not_5:
+    # check a eq 5?
+    call is_a_5
+    # if a == 5
+    jump_eq finally
+    # else
+    call add_1_to_a
+    jump while_a_is_not_5
+
+is_a_5:
+    echo reg_a
+    set_reg_b 5
+    compare_a_and_b
+    # set reg_c 0 or 1
+    ret
+
+add_1_to_a:
+    echo "no"
+    set_reg_b 1
+    add_b_to_a
+    ret
+
+finally:
+    echo "yes"
+    exit
