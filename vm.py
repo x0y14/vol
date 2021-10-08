@@ -129,10 +129,13 @@ class VM:
 
             elif op == "push":
                 arg = self.mem.main[self.pc + 1]
-                if arg != "bp":
+                if arg == "bp":
+                    data = self.bp
+                else:
                     raise Exception(f"push: not ye implemented ({arg})")
+
                 self.sp -= 1
-                self.mem.stack[self.sp] = arg
+                self.mem.stack[self.sp] = data
                 self.pc += 2
 
             elif op == "echo":
