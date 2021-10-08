@@ -137,6 +137,15 @@ class VM:
                 self.sp -= 1
                 self.mem.stack[self.sp] = data
                 self.pc += 2
+            elif op == "pop":
+                arg = self.mem.main[self.pc + 1]
+                if arg == "bp":
+                    self.bp = self.mem.stack[self.sp]
+                else:
+                    raise Exception(f"push: not ye implemented ({arg})")
+
+                self.sp += 1
+                self.pc += 2
 
             elif op == "echo":
                 letters = self.mem.main[self.pc + 1]

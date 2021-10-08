@@ -17,6 +17,7 @@ Commands = {
     "copy_bp_to_sp": 0,
     "copy_sp_to_bp": 0,
     "push": 1,
+    "pop": 1,
 
     "echo": 1,
 
