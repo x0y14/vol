@@ -3,8 +3,8 @@ Commands = {
     "set_reg_b": 1,
     "set_reg_c": 1,
 
-    "add_b_to_a": 1,
-    "add_c_to_a": 1,
+    "add_b_to_a": 0,
+    "add_c_to_a": 0,
 
     "compare_a_and_b": 0,
 
