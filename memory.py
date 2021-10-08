@@ -26,10 +26,11 @@ class Memory:
             print()
 
     def dump_vm(self, regs, pc, zf, bp, sp):
+        print()
         print("=== VM ===")
         s = {"reg": {"a": regs[0], "b": regs[1], "c": regs[2]}, "pc": pc, "bp": bp, "sp": sp, "zf": zf}
         print(f"\033[2K\033[G{str(s)}", end="")
-        return 2
+        return 4
 
     def dump_main(self, pc: int) -> (int, bool):
         print()

@@ -24,7 +24,7 @@ def main():
     vm = VM(asm_path, mem)
 
     # lunch
-    vm.start(step_debug=True)
+    vm.start(step_debug=True, use_display=True)
 
 
 if __name__ == '__main__':

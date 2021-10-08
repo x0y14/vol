@@ -1,4 +1,5 @@
 import time
+
 from lexer import *
 from parser import Parser
 from v_command import Commands
@@ -32,6 +33,9 @@ class VM:
         self.reg_b = 0
         self.reg_c = 0
 
+        self.display_lines = 0
+        self.display = []
+
     def mov_pc(self, n):
         self.pc += n
 
@@ -40,11 +44,15 @@ class VM:
             program = f.read()
         return lex(program)
 
-    def start(self, step_debug=False):
+    def start(self, step_debug=False, use_display=False):
         if step_debug:
             print("Step Debug >> Press enter to next step")
-        print("vm:\n")
+        print(f"VM {{ ST-Debug: {step_debug}, Display: {use_display} }}:\n")
         while True:
+            print("=== Display ===")
+            print(self.display)
+            print("\033[2A")
+
             self.mem.dump(
                 regs=[self.reg_a, self.reg_b, self.reg_c],
                 pc=self.pc,
@@ -55,19 +63,19 @@ class VM:
             op = self.mem.main[self.pc]
             if op == "set_reg_a":
                 # self.state(op)
-                n = self.mem.main[self.pc+1]
+                n = self.mem.main[self.pc + 1]
                 self.reg_a = n
                 self.pc += 2
 
             elif op == "set_reg_b":
                 # self.state(op)
-                n = self.mem.main[self.pc+1]
+                n = self.mem.main[self.pc + 1]
                 self.reg_b = n
                 self.pc += 2
 
             elif op == "set_reg_c":
                 # self.state(op)
-                n = self.mem.main[self.pc+1]
+                n = self.mem.main[self.pc + 1]
                 self.reg_c = n
                 self.pc += 2
 
@@ -112,16 +120,23 @@ class VM:
                 self.sp += 1
                 self.pc = return_addr
 
+            elif op == "echo":
+                letters = self.mem.main[self.pc + 1]
+                self.echo(letters)
+                self.pc += 2
+
             elif op == "exit":
-                # self.state(op)
                 break
             else:
-                raise f"Unknown operator({op})"
+                raise Exception(f"Unknown operator `{op}`")
 
             if step_debug:
                 input()
             else:
                 time.sleep(0.2)
+
+    def echo(self, letters):
+        self.display.append(letters)
 
     def set_mem(self, addr, n):
         self.mem.main[addr] = n

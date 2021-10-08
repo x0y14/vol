@@ -14,5 +14,7 @@ Commands = {
     "call": 1,
     "ret": 0,
 
+    "echo": 1,
+
     "exit": 0,
 }
