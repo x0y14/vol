@@ -25,6 +25,9 @@ def type_convert(token):
         # print(f"$comment : {token}")
         return ""
 
+    if token[0] == "\"" and token[-1] == "\"" or token[0] == "\'" and token[-1] == "\'":
+        return token
+
     if includeNumber(token) and include(token, ".") and not include(token, ["\"", "\'"]):
         return float(token)
     elif includeNumber(token) and include(token, ".") and include(token, ["\"", "\'"]):
@@ -183,6 +186,7 @@ class Lexer:
         while not self.is_eof():
             char = self.curt()
             if char == "\"":
+                string += "\""
                 if self.pos != 0 and self.prev() == "\\":
                     string += self.curt()
                     self.go_next()
