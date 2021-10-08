@@ -102,15 +102,14 @@ class VM:
             elif op == "call":
                 # self.state(op)
                 # 帰ってくる場所は、この命令の次の命令の部分。
-                self.mem.stack.append(self.pc + 2)
-                self.sp += 1
+                self.sp -= 1
+                self.mem.stack[self.sp] = self.pc + 2
                 addr_we_are_going = self.mem.main[self.pc + 1]
                 self.pc = addr_we_are_going
 
             elif op == "ret":
-                # self.state(op)
-                return_addr = self.mem.stack.pop()
-                self.sp -= 1
+                return_addr = self.mem.stack[self.sp]
+                self.sp += 1
                 self.pc = return_addr
 
             elif op == "exit":
