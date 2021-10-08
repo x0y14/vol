@@ -122,7 +122,14 @@ class VM:
 
             elif op == "echo":
                 letters = self.mem.main[self.pc + 1]
-                self.echo(letters)
+                data = str(letters)
+                if letters == "reg_a":
+                    data = str(self.reg_a)
+                elif letters == "reg_b":
+                    data = str(self.reg_b)
+                elif letters == "reg_c":
+                    data = str(self.reg_c)
+                self.echo(data)
                 self.pc += 2
 
             elif op == "exit":
