@@ -19,7 +19,7 @@ class Memory:
     def dump(self, regs, zf, bp, sp, pc):
         l0 = self.dump_vm(regs, pc, zf, bp, sp)
         l1, is_exit = self.dump_main(pc)
-        l2 = self.dump_stack()
+        l2 = self.dump_stack(bp, sp)
         if not is_exit:
             print(f"\033[{l0+l1+l2}A", end="")
         else:
@@ -39,12 +39,12 @@ class Memory:
         for mid_line in self.mid:
             arrow = ""
             if pc == mid_line['pc']:
-                arrow = "-->"
+                arrow = "      --> "
                 if mid_line['raw'] == ['exit']:
                     is_exit = True
                 else:
                     is_exit = False
-            status += "{:3} | {:3} | {:30}\n".format(arrow, mid_line['pc'], self.cmd_coloring(mid_line['raw']))
+            status += "{:10} | {:3} | {:30}\n".format(arrow, mid_line['pc'], self.cmd_coloring(mid_line['raw']))
 
         print(status, end="")
 
@@ -66,14 +66,23 @@ class Memory:
             return f"\033[32m{str(cmd)}\033[0m"
         return str(cmd)
 
-    def dump_stack(self) -> int:
+    def dump_stack(self, bp, sp) -> int:
         print("=== Memory (stack) ===")
-        # print("[".format())
-        print(f"\033[2K\033[G{str(self.stack)}", end="")
-        # print("\r", end="")
-        # stack_no = 0
-        # for s in self.stack:
-        #     print("{}, ".format(s), end="")
-        #     stack_no += 1
-        # print(" ]")
-        return 2
+        stack_str = ""
+        stack_pos = 0
+        for st in self.stack:
+            data = "\033[32m" + str(self.stack[stack_pos]) + "\033[0m"
+            if stack_pos == bp and stack_pos == sp:
+                allow = "bp sp --> "
+            elif stack_pos == bp:
+                allow = "  bp  --> "
+            elif stack_pos == sp:
+                allow = "  sp  --> "
+            else:
+                allow = ""
+                data = str(self.stack[stack_pos])
+
+            stack_str += "{:10} | {:3} | {:5}\n".format(allow, stack_pos, data)
+            stack_pos += 1
+        print(stack_str, end="")
+        return len(self.stack) + 2
