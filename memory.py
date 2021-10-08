@@ -1,5 +1,6 @@
 from v_command import *
 import sys
+from misc import *
 
 
 class Memory:
@@ -7,7 +8,7 @@ class Memory:
         # main memory
         self.main = []
         # stack
-        self.stack = []
+        self.stack = list_zero(4)
 
         # for debug
         # program simple middle data

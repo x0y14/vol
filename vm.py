@@ -19,12 +19,10 @@ class VM:
 
         # program counter
         self.pc = 0
-
         # base pointer
-        self.bp = 0
-
+        self.bp = len(self.mem.main) - 1
         # stack pointer
-        self.sp = 0
+        self.sp = len(self.mem.stack) - 1
 
         # zero flag
         self.zf = 0
