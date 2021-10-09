@@ -5,13 +5,15 @@ exit
 
 sub:
     push bp
-    copy_sp_to_bp
+    # copy_sp_to_bp
+    cp sp bp
 
     # サブルーチン本体
     set_reg_a 2
 
     # 後片付け
-    copy_bp_to_sp
+    # copy_bp_to_sp
+    cp bp sp
     pop bp
 
     ret
