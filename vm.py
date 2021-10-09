@@ -166,7 +166,7 @@ class VM:
 
             elif op == "add_sp":
                 arg = self.mem.main[self.pc + 1]
-                self.pc += arg
+                self.sp += arg
                 self.pc += 2
 
             elif op == "echo":
