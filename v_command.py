@@ -20,6 +20,8 @@ Commands = {
     "push": 1,
     "pop": 1,
 
+    "add_sp": 1,
+
     "echo": 1,
 
     "exit": 0,

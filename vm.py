@@ -164,6 +164,11 @@ class VM:
                 self.sp += 1
                 self.pc += 2
 
+            elif op == "add_sp":
+                arg = self.mem.main[self.pc + 1]
+                self.pc += arg
+                self.pc += 2
+
             elif op == "echo":
                 letters = self.mem.main[self.pc + 1]
                 data = str(letters)
