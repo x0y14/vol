@@ -8,7 +8,7 @@ class Memory:
         # main memory
         self.main = []
         # stack
-        self.stack = list_zero(4)
+        self.stack = list_zero(20)
 
         # for debug
         # program simple middle data
