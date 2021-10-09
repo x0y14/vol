@@ -90,6 +90,8 @@ class Parser:
                 args.append(None)
             elif arg.typ == TokenType.IDENT:
                 args.append(str(arg.data))
+            elif arg.typ == TokenType.ADDRESS:
+                args.append(arg.data)
             else:
                 args.append(arg)
             self.go_next()

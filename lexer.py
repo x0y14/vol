@@ -28,6 +28,9 @@ def type_convert(token):
     if token[0] == "\"" and token[-1] == "\"" or token[0] == "\'" and token[-1] == "\'":
         return token
 
+    if token[0] == "[" and token[-1] == "]":
+        return token
+
     if includeNumber(token) and include(token, ".") and not include(token, ["\"", "\'"]):
         return float(token)
     elif includeNumber(token) and include(token, ".") and include(token, ["\"", "\'"]):
@@ -66,7 +69,7 @@ def lex(text):
 
 def is_symbol(c: str) -> bool:
     # exclude "_"
-    return c in "!@#$%^&*()-+={}[],.:;"
+    return c in "!@#$%^&*()-+={},.:;"
 
 
 def is_digit(c: str) -> bool:
@@ -238,6 +241,21 @@ class Lexer:
         e_pos = self.pos + 1
         return Token(TokenType.EOF, "", s_pos, e_pos)
 
+    def consume_addr(self):
+        s_pos = self.pos
+        addr = ""
+        while not self.is_eof():
+            tk = self.curt()
+            if tk == "]":
+                addr += tk
+                self.go_next()
+                break
+            else:
+                addr += tk
+            self.go_next()
+        e_pos = self.pos
+        return Token(TokenType.ADDRESS, addr, s_pos, e_pos)
+
     def lex(self) -> List[Token]:
         tokens = []
         while not self.is_eof():
@@ -246,6 +264,8 @@ class Lexer:
                 tokens.append(self.consume_string())
             elif is_digit(char):
                 tokens.append(self.consume_numeric())
+            elif char == "[":
+                tokens.append(self.consume_addr())
             elif is_symbol(char):
                 sym = self.consume_symbol()
                 if sym.typ != TokenType.COMMENT:
