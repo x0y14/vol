@@ -17,8 +17,10 @@ class TokenType(IntEnum):
     NEWLINE = auto()
     WHITESPACE = auto()
 
-    # !@#$%^&*()_-+={}[]
+    # !@#$%^&*()_-+={}
     SYMBOL = auto()
+
+    ADDRESS = auto()
 
     COMMENT = auto()
 
@@ -48,6 +50,8 @@ def TokenType_string(tktyp: TokenType):
         return "WHITESPACE"
     elif tktyp == TokenType.SYMBOL:
         return "SYMBOL"
+    elif tktyp == TokenType.ADDRESS:
+        return "ADDRESS"
     elif tktyp == TokenType.COMMENT:
         return "COMMENT"
     elif tktyp == TokenType.EOF:
