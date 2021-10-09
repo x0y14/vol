@@ -90,6 +90,43 @@ class VM:
                 self.add_c_to_a()
                 self.pc += 1
 
+            elif op == "add":
+                operand1 = self.mem.main[self.pc + 1]
+                val = self.mem.main[self.pc + 2]
+                data = self.convert_keyword(val)
+
+                if operand1 == "reg_a":
+                    self.reg_a += data
+                elif operand1 == "reg_b":
+                    self.reg_b += data
+                elif operand1 == "reg_c":
+                    self.reg_c += data
+
+                self.pc += 3
+
+            elif op == "sub":
+                operand1 = self.mem.main[self.pc + 1]
+                val = self.mem.main[self.pc + 2]
+                data = self.convert_keyword(val)
+
+                if operand1 == "reg_a":
+                    self.reg_a -= data
+                elif operand1 == "reg_b":
+                    self.reg_b -= data
+                elif operand1 == "reg_c":
+                    self.reg_c -= data
+
+                self.pc += 3
+
+            elif op == "cmp":
+                operand1 = self.mem.main[self.pc + 1]
+                operand2 = self.mem.main[self.pc + 2]
+                if self.convert_keyword(operand1) == self.convert_keyword(operand2):
+                    self.zf = 1
+                else:
+                    self.zf = 0
+                self.pc += 3
+
             elif op == "compare_a_and_b":
                 # self.state(op)
                 self.compare_a_and_b()
@@ -107,6 +144,21 @@ class VM:
                 # self.state(op)
                 addr = self.mem.main[self.pc + 1]
                 self.pc = addr
+
+            # jump if zero
+            elif op == "jz":
+                if self.zf == 0:
+                    addr = self.mem.main[self.pc + 1]
+                    self.pc = addr
+                else:
+                    self.pc += 2
+            # jump if not zero
+            elif op == "jnz":
+                if self.zf != 0:
+                    addr = self.mem.main[self.pc + 1]
+                    self.pc = addr
+                else:
+                    self.pc += 2
 
             elif op == "call":
                 # self.state(op)
@@ -136,10 +188,8 @@ class VM:
             elif op == "push":
                 arg = self.mem.main[self.pc + 1]
                 # keyword
-                if arg == "bp":
-                    data = self.bp
-                elif arg == "sp":
-                    data = self.sp
+                if arg in ["reg_a", "reg_b", "reg_c", "bp", "sp"]:
+                    data = self.convert_keyword(arg)
                 # numeric
                 elif type(arg) is int or type(arg) is float:
                     data = arg
@@ -158,6 +208,12 @@ class VM:
                     self.bp = self.mem.stack[self.sp]
                 elif arg == "sp":
                     self.sp = self.mem.stack[self.sp]
+                elif arg == "reg_a":
+                    self.reg_a = self.mem.stack[self.sp]
+                elif arg == "reg_b":
+                    self.reg_b = self.mem.stack[self.sp]
+                elif arg == "reg_c":
+                    self.reg_c = self.mem.stack[self.sp]
                 else:
                     raise Exception(f"push: not ye implemented ({arg})")
 
@@ -234,6 +290,26 @@ class VM:
                 raise Exception(f"cpy: no impl({addr})")
         else:
             raise Exception(f"cpy: no impl({addr})")
+
+    def convert_keyword(self, keyword):
+        reserved = ["reg_a", "reg_b", "reg_c", "bp", "sp"]
+        if keyword not in reserved:
+            raise Exception(f"convert_keyword: unknown({keyword})")
+
+        if keyword == "reg_a":
+            return self.reg_a
+
+        if keyword == "reg_b":
+            return self.reg_b
+
+        if keyword == "reg_c":
+            return self.reg_c
+
+        if keyword == "bp":
+            return self.bp
+
+        if keyword == "sp":
+            return self.sp
 
     def echo(self, letters):
         self.display.append(letters)
