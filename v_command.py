@@ -14,8 +14,9 @@ Commands = {
     "call": 1,
     "ret": 0,
 
-    "copy_bp_to_sp": 0,
-    "copy_sp_to_bp": 0,
+    # "copy_bp_to_sp": 0,
+    # "copy_sp_to_bp": 0,
+    "cp": 2,
     "push": 1,
     "pop": 1,
 

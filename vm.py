@@ -1,3 +1,4 @@
+import re
 import time
 
 from lexer import *
@@ -120,17 +121,31 @@ class VM:
                 self.sp += 1
                 self.pc = return_addr
 
-            elif op == "copy_bp_to_sp":
-                self.sp = self.bp
-                self.pc += 1
-            elif op == "copy_sp_to_bp":
-                self.bp = self.sp
-                self.pc += 1
+            # elif op == "copy_bp_to_sp":
+            #     self.sp = self.bp
+            #     self.pc += 1
+            # elif op == "copy_sp_to_bp":
+            #     self.bp = self.sp
+            #     self.pc += 1
+            elif op == "cp":
+                from_ = self.mem.main[self.pc + 1]
+                to_ = self.mem.main[self.pc + 2]
+                self.cpy(from_, to_)
+                self.pc += 3
 
             elif op == "push":
                 arg = self.mem.main[self.pc + 1]
+                # keyword
                 if arg == "bp":
                     data = self.bp
+                elif arg == "sp":
+                    data = self.sp
+                # numeric
+                elif type(arg) is int or type(arg) is float:
+                    data = arg
+                # string
+                elif (arg[0] == "\"" and arg[-1] == "\"") or arg[0] == "\'" and arg[-1] == "\'":
+                    data = arg
                 else:
                     raise Exception(f"push: not ye implemented ({arg})")
 
@@ -141,6 +156,8 @@ class VM:
                 arg = self.mem.main[self.pc + 1]
                 if arg == "bp":
                     self.bp = self.mem.stack[self.sp]
+                elif arg == "sp":
+                    self.sp = self.mem.stack[self.sp]
                 else:
                     raise Exception(f"push: not ye implemented ({arg})")
 
@@ -168,6 +185,50 @@ class VM:
                 input()
             else:
                 time.sleep(0.2)
+
+    def cpy(self, from_, to_):
+        if from_ == "bp":
+            val = self.bp
+        elif from_ == "sp":
+            val = self.sp
+        elif (from_[0] == "[") and (from_[-1] == "]"):
+            val = self.addr_convert(from_)
+        else:
+            raise Exception(f"cpy: unknown src value({from_})")
+
+        if to_ == "bp":
+            self.bp = val
+        elif to_ == "sp":
+            self.sp = val
+        elif to_ == "reg_a":
+            self.reg_a = val
+        elif to_ == "reg_b":
+            self.reg_b = val
+        elif to_ == "reg_c":
+            self.reg_c = val
+        # elif (to_[0] == "[") and (to_[-1] == "]"):
+        #     self.addr_convert(to_)
+        else:
+            raise Exception(f"cpy: unknown dest value({from_})")
+
+    def addr_convert(self, addr):
+        # addr: "[bp+1]" -> return self.bp + 1
+        addr_reg = re.compile(r"\[(bp|sp)([+\-])(\d+)]")
+        match = addr_reg.match(addr)
+        bp_sp = match.group(1)
+        plus_minus = match.group(2)
+        val = int(match.group(3))
+
+        # # target
+        if bp_sp == "bp":
+            if plus_minus == "+":
+                return self.mem.stack[self.bp + val]
+            elif plus_minus == "-":
+                return self.mem.stack[self.bp - val]
+            else:
+                raise Exception(f"cpy: no impl({addr})")
+        else:
+            raise Exception(f"cpy: no impl({addr})")
 
     def echo(self, letters):
         self.display.append(letters)
