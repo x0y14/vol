@@ -225,6 +225,11 @@ class VM:
                 self.add_sp(arg)
                 self.pc += 2
 
+            elif op == "sub_sp":
+                arg = self.mem.main[self.pc + 1]
+                self.sub_sp(arg)
+                self.pc += 2
+
             elif op == "echo":
                 letters = self.mem.main[self.pc + 1]
                 data = str(letters)
@@ -320,6 +325,11 @@ class VM:
         if (self.sp + n) < 0:
             raise Exception("stack over flow")
         self.sp += n
+
+    def sub_sp(self, n):
+        if (self.sp - n) < 0:
+            raise Exception("stack over flow")
+        self.sp -= n
 
     def echo(self, letters):
         self.display.append(letters)

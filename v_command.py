@@ -27,6 +27,7 @@ Commands = {
     "pop": 1,
 
     "add_sp": 1,
+    "sub_sp": 1,
 
     "echo": 1,
 
