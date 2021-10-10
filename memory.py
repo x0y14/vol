@@ -4,11 +4,11 @@ from misc import *
 
 
 class Memory:
-    def __init__(self, mid: dict, label_mapping: dict):
+    def __init__(self, mem_size: int, mid: dict, label_mapping: dict):
         # main memory
         self.main = []
         # stack
-        self.stack = list_zero(20)
+        self.stack = list_zero(mem_size)
 
         # for debug
         # program simple middle data

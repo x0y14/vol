@@ -163,14 +163,14 @@ class VM:
             elif op == "call":
                 # self.state(op)
                 # 帰ってくる場所は、この命令の次の命令の部分。
-                self.sp -= 1
+                self.add_sp(-1)
                 self.mem.stack[self.sp] = self.pc + 2
                 addr_we_are_going = self.mem.main[self.pc + 1]
                 self.pc = addr_we_are_going
 
             elif op == "ret":
                 return_addr = self.mem.stack[self.sp]
-                self.sp += 1
+                self.add_sp(1)
                 self.pc = return_addr
 
             # elif op == "copy_bp_to_sp":
@@ -199,7 +199,7 @@ class VM:
                 else:
                     raise Exception(f"push: not ye implemented ({arg})")
 
-                self.sp -= 1
+                self.add_sp(-1)
                 self.mem.stack[self.sp] = data
                 self.pc += 2
             elif op == "pop":
@@ -207,7 +207,7 @@ class VM:
                 if arg == "bp":
                     self.bp = self.mem.stack[self.sp]
                 elif arg == "sp":
-                    self.sp = self.mem.stack[self.sp]
+                    self.set_sp(self.mem.stack[self.sp])
                 elif arg == "reg_a":
                     self.reg_a = self.mem.stack[self.sp]
                 elif arg == "reg_b":
@@ -217,12 +217,12 @@ class VM:
                 else:
                     raise Exception(f"push: not ye implemented ({arg})")
 
-                self.sp += 1
+                self.add_sp(1)
                 self.pc += 2
 
             elif op == "add_sp":
                 arg = self.mem.main[self.pc + 1]
-                self.sp += arg
+                self.add_sp(arg)
                 self.pc += 2
 
             elif op == "echo":
@@ -260,7 +260,7 @@ class VM:
         if to_ == "bp":
             self.bp = val
         elif to_ == "sp":
-            self.sp = val
+            self.set_sp(val)
         elif to_ == "reg_a":
             self.reg_a = val
         elif to_ == "reg_b":
@@ -310,6 +310,16 @@ class VM:
 
         if keyword == "sp":
             return self.sp
+
+    def set_sp(self, n):
+        if n < 0:
+            raise Exception("stack over flow")
+        self.sp = n
+
+    def add_sp(self, n):
+        if (self.sp + n) < 0:
+            raise Exception("stack over flow")
+        self.sp += n
 
     def echo(self, letters):
         self.display.append(letters)
