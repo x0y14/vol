@@ -253,12 +253,10 @@ class VM:
                 time.sleep(0.2)
 
     def cpy(self, from_, to_):
-        if from_ == "bp":
-            val = self.bp
-        elif from_ == "sp":
-            val = self.sp
+        if from_ in ["reg_a", "reg_b", "reg_c", "bp", "sp"]:
+            val = self.convert_keyword(from_)
         elif (from_[0] == "[") and (from_[-1] == "]"):
-            val = self.addr_convert(from_)
+            val = self.addr_convert_data(from_)
         else:
             raise Exception(f"cpy: unknown src value({from_})")
 
@@ -272,12 +270,31 @@ class VM:
             self.reg_b = val
         elif to_ == "reg_c":
             self.reg_c = val
-        # elif (to_[0] == "[") and (to_[-1] == "]"):
+        elif (to_[0] == "[") and (to_[-1] == "]"):
+            self.mem.stack[self.addr_convert_pos(to_)] = val
         #     self.addr_convert(to_)
         else:
-            raise Exception(f"cpy: unknown dest value({from_})")
+            raise Exception(f"cpy: unknown dest value({to_})")
 
-    def addr_convert(self, addr):
+    def addr_convert_pos(self, addr):
+        addr_reg = re.compile(r"\[(bp|sp)([+\-])(\d+)]")
+        match = addr_reg.match(addr)
+        bp_sp = match.group(1)
+        plus_minus = match.group(2)
+        val = int(match.group(3))
+
+        # # target
+        if bp_sp == "bp":
+            if plus_minus == "+":
+                return self.bp + val
+            elif plus_minus == "-":
+                return self.bp - val
+            else:
+                raise Exception(f"cpy: no impl({addr})")
+        else:
+            raise Exception(f"cpy: no impl({addr})")
+
+    def addr_convert_data(self, addr):
         # addr: "[bp+1]" -> return self.bp + 1
         addr_reg = re.compile(r"\[(bp|sp)([+\-])(\d+)]")
         match = addr_reg.match(addr)
