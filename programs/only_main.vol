@@ -1,0 +1,9 @@
+call main
+exit
+main:
+	push bp
+	cp sp bp
+	echo "hello_world"
+	cp bp sp
+	pop bp
+	ret

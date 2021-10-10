@@ -1,0 +1,15 @@
+[
+  "stmts",
+
+  [
+    "func", "main", [],
+    [
+      ["call", "say_hello", ["\"john\""]]
+    ]
+  ],
+
+  [
+    "func", "say_hello", [],
+    []
+  ]
+]

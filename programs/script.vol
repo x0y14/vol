@@ -1,0 +1,20 @@
+call main
+exit
+
+main:
+	push bp
+	cp sp bp
+	# todo : 関数本体
+	call say_hello
+	cp bp sp
+	pop bp
+	ret
+
+say_hello:
+	push bp
+	cp sp bp
+	# todo : 関数本体
+	cp bp sp
+	pop bp
+	ret
+
