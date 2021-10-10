@@ -1,0 +1,16 @@
+push 34 # arg2
+push 12 # arg1
+call sub
+add_sp 2
+exit
+
+
+sub:
+    push bp
+    cp sp bp
+
+    cp [bp+2] reg_a
+
+    cp bp sp
+    pop bp
+    ret
