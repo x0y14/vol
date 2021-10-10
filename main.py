@@ -1,6 +1,6 @@
 import sys
 from vm import VM
-from compiler import Compiler
+from mid_compiler import MidCompiler
 from memory import *
 
 
@@ -8,7 +8,7 @@ def main():
     # prepare compiler
     filepath = sys.argv[1]
     asm_path = sys.argv[2]
-    cpr = Compiler(filepath)
+    cpr = MidCompiler(filepath)
     cpr.convert()
     cpr.mem_mapping()
     code = cpr.codegen()

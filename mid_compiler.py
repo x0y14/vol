@@ -5,7 +5,7 @@ from lexer import *
 from parser import *
 
 
-class Compiler:
+class MidCompiler:
     def __init__(self, path):
         self.filepath = path
 
@@ -78,7 +78,7 @@ class Compiler:
 if __name__ == "__main__":
     filepath = sys.argv[1]
     asm_path = sys.argv[2]
-    cpr = Compiler(filepath)
+    cpr = MidCompiler(filepath)
     cpr.convert()
     cpr.mem_mapping()
     code = cpr.codegen()
