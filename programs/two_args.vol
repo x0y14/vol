@@ -1,7 +1,9 @@
-push 34 # arg2
-push 12 # arg1
+push 4
+push 3 # arg2
+push 2 # arg2
+push 1 # arg1
 call sub
-add_sp 2
+add_sp 4
 exit
 
 
@@ -9,8 +11,21 @@ sub:
     push bp
     cp sp bp
 
-    cp [bp+2] reg_a
+    cp [bp+2] reg_a # arg1
+    cp [bp+3] reg_b # arg2
+    add reg_a reg_b
+    echo reg_a
+
+    cp [bp+4] reg_b # arg3
+    add reg_a reg_b
+    echo reg_a
+
+    cp [bp+5] reg_b # arg4
+    add reg_a reg_b
+    echo reg_a
 
     cp bp sp
     pop bp
     ret
+
+# {'reg': {'a': 0, 'b': 0, 'c': 0}, 'pc': 0, 'bp': 50, 'sp': 19, 'zf': 0}
