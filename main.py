@@ -19,7 +19,8 @@ def main():
 
     # prepare virtual machine
     # - create memory
-    mem = Memory(mid, label_mapping)
+    mem_size = 20
+    mem = Memory(mem_size, mid, label_mapping)
     # init
     vm = VM(asm_path, mem)
 
