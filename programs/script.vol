@@ -1,19 +1,65 @@
 call main
 exit
 
+
 main:
+	# 呼び出し元に戻れるように現状保存
 	push bp
 	cp sp bp
 	# todo : 関数本体
-	call say_hello
+
+	# 引数準備 : me
+	sub_sp 1
+
+	# ローカル変数に値を代入
+	cp "yuhei" [bp-1]
+
+	push 15 # 引数(15)
+	push [bp-1] # 引数(me)
+	call say_hello # 関数呼び出し
+	add_sp 2 # 呼び出し後の位置修正
+
+	push 16 # 引数(16)
+	push "tom" # 引数("tom")
+	call say_hello # 関数呼び出し
+	add_sp 2 # 呼び出し後の位置修正
+
+	push 17 # 引数(17)
+	push "john" # 引数("john")
+	call say_hello # 関数呼び出し
+	add_sp 2 # 呼び出し後の位置修正
+
+	push 18 # 引数(18)
+	push 1234 # 引数(1234)
+	call say_hello # 関数呼び出し
+	add_sp 2 # 呼び出し後の位置修正
+
+	# 現状復帰
 	cp bp sp
 	pop bp
 	ret
 
+
+
 say_hello:
+	# 呼び出し元に戻れるように現状保存
 	push bp
 	cp sp bp
+
+	# 引数をローカル変数として代入
+	# your_name
+	sub_sp 1
+	cp [bp+2] [bp-2]
+	# age
+	sub_sp 1
+	cp [bp+3] [bp-3]
 	# todo : 関数本体
+
+	echo [bp-2]
+
+	echo [bp-3]
+
+	# 現状復帰
 	cp bp sp
 	pop bp
 	ret

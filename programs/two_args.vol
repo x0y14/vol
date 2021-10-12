@@ -1,5 +1,5 @@
-push 4
-push 3 # arg2
+push 4 # arg4
+push 3 # arg3
 push 2 # arg2
 push 1 # arg1
 call sub
