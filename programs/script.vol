@@ -14,12 +14,22 @@ main:
 	# ローカル変数に値を代入
 	cp "yuhei" [bp-1]
 
-	push 0 # 引数(0)
-	push 0 # 引数(0)
-	push 0 # 引数(0)
-	push 0 # 引数(0)
+	push 18 # 引数(18)
+	push [bp-1] # 引数(me)
 	call say_hello # 関数呼び出し
-	add_sp 4 # 呼び出し後の位置修正
+	add_sp 2 # 呼び出し後の位置修正
+
+	# 引数準備 : result
+	sub_sp 1
+
+	push 21 # 引数(21)
+	push "tom" # 引数("tom")
+	call say_hello # 関数呼び出し
+	add_sp 2 # 呼び出し後の位置修正
+	# 戻り値をローカル変数に格納
+	cp reg_a [bp-2]
+
+	echo [bp-2]
 
 	# 現状復帰
 	cp bp sp
@@ -36,15 +46,19 @@ say_hello:
 	# 引数をローカル変数として代入
 	# your_name
 	sub_sp 1
-	cp [bp+2] [bp-2]
+	cp [bp+2] [bp-3]
 	# age
 	sub_sp 1
-	cp [bp+3] [bp-3]
+	cp [bp+3] [bp-4]
 	# todo : 関数本体
 
-	echo [bp-2]
-
 	echo [bp-3]
+
+	echo [bp-4]
+
+
+	# 戻り値を設定
+	cp "success" reg_a
 
 	# 現状復帰
 	cp bp sp

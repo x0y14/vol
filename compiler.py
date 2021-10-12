@@ -6,6 +6,7 @@ from pprint import pprint
 class Compiler:
     def __init__(self):
         self.defined_variables = []
+        self.defined_functions = {}
 
     def codegen(self, tree):
         asm_lines = ["call main", "exit"]
@@ -40,8 +41,12 @@ class Compiler:
         asm_lines = []
 
         func_name = rest[0]
+        if func_name in self.defined_functions:
+            raise Exception(f"defined function: {func_name}")
 
         func_args = rest[1]
+        # store how many arguments it have
+        self.defined_functions[func_name] = len(func_args)
 
         func_body = rest[2]
         asm_lines.append("")
@@ -69,7 +74,11 @@ class Compiler:
 
             if stmt_head == "call":
                 func_name = stmt_rest[0]
+                # if func_name not in self.defined_functions:
+                #     raise Exception(f"undefined function: {func_name}")
                 func_args: list = stmt_rest[1]
+                # if len(func_args) != self.defined_functions[func_name]:
+                #     raise Exception(f"dose not match number of function arguments: {func_name}")
                 if type(func_args) is list and len(func_args) != 0:
                     # has args; 逆順にpush
                     func_args.reverse()
@@ -87,6 +96,36 @@ class Compiler:
 
                 else:
                     asm_lines.append(f"\tcall {func_name} # 関数呼び出し")
+
+            elif stmt_head == "call_set":
+                define_return_value = stmt_rest[0]
+                func_rest = stmt_rest[1]
+
+                func_name = func_rest[0]
+                func_args: list = func_rest[1]
+
+                if type(func_args) is list and len(func_args) != 0:
+                    # has args; 逆順にpush
+                    func_args.reverse()
+                    for arg in func_args:
+                        # 変数を変換して入れる
+                        arg_candidate = self.exchange_defined_variable(arg)
+                        if arg_candidate is None:
+                            asm_lines.append(f"\tpush {arg} # 引数")
+                        else:
+                            asm_lines.append(f"\tpush {arg_candidate} # 引数({arg})")
+
+                    asm_lines.append(f"\tcall {func_name} # 関数呼び出し")
+                    # sp戻す。
+                    asm_lines.append(f"\tadd_sp {len(func_args)} # 呼び出し後の位置修正")
+
+                else:
+                    asm_lines.append(f"\tcall {func_name} # 関数呼び出し")
+
+                asm_lines.append("\t# 戻り値をローカル変数に格納")
+                pos = self.defined_variables.index(define_return_value) + 1
+                asm_lines.append(f"\tcp reg_a [bp-{pos}]")
+
             elif stmt_head == "var":
                 self.defined_variables.append(stmt_rest[0])
                 asm_lines.append(f"\t# 引数準備 : {stmt_rest[0]}")
@@ -120,6 +159,18 @@ class Compiler:
                     asm_lines.append(f"\tcp {value} [bp-{pos}]")
                 else:
                     raise Exception(f"not yet impl: {stmt_rest}")
+
+            elif stmt_head == "return":
+                return_value = stmt_rest[0][0]
+                if return_value[0] == "[" and return_value[-1] == "]":
+                    v = self.exchange_defined_variable(return_value)
+                    if v is None:
+                        raise Exception(f"undefined variable: {return_value}")
+                    else:
+                        return_value = v
+
+                asm_lines.append("\n\t# 戻り値を設定")
+                asm_lines.append(f"\tcp {return_value} reg_a")
 
             elif stmt_head == "print":
                 value_or_keyword = stmt_rest[0]
