@@ -6,10 +6,7 @@
     [
       ["var", "me"],
       ["set", "me", "\"yuhei\""],
-      ["call", "say_hello", ["me", 15]],
-      ["call", "say_hello", ["\"tom\"", 16]],
-      ["call", "say_hello", ["\"john\"", 17]],
-      ["call", "say_hello", [1234, 18]]
+      ["call", "say_hello", [0, 0, 0, 0]]
     ]
   ],
   [

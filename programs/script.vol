@@ -14,25 +14,12 @@ main:
 	# ローカル変数に値を代入
 	cp "yuhei" [bp-1]
 
-	push 15 # 引数(15)
-	push [bp-1] # 引数(me)
+	push 0 # 引数(0)
+	push 0 # 引数(0)
+	push 0 # 引数(0)
+	push 0 # 引数(0)
 	call say_hello # 関数呼び出し
-	add_sp 2 # 呼び出し後の位置修正
-
-	push 16 # 引数(16)
-	push "tom" # 引数("tom")
-	call say_hello # 関数呼び出し
-	add_sp 2 # 呼び出し後の位置修正
-
-	push 17 # 引数(17)
-	push "john" # 引数("john")
-	call say_hello # 関数呼び出し
-	add_sp 2 # 呼び出し後の位置修正
-
-	push 18 # 引数(18)
-	push 1234 # 引数(1234)
-	call say_hello # 関数呼び出し
-	add_sp 2 # 呼び出し後の位置修正
+	add_sp 4 # 呼び出し後の位置修正
 
 	# 現状復帰
 	cp bp sp
