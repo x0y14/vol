@@ -196,8 +196,11 @@ class VM:
                 # string
                 elif (arg[0] == "\"" and arg[-1] == "\"") or arg[0] == "\'" and arg[-1] == "\'":
                     data = arg
+                # addr
+                elif arg[0] == "[" and arg[-1] == "]":
+                    data = self.addr_convert_data(arg)
                 else:
-                    raise Exception(f"push: not ye implemented ({arg})")
+                    raise Exception(f"push: not yet implemented ({arg})")
 
                 self.add_sp(-1)
                 self.mem.stack[self.sp] = data
@@ -239,6 +242,8 @@ class VM:
                     data = str(self.reg_b)
                 elif letters == "reg_c":
                     data = str(self.reg_c)
+                elif letters[0] == "[" and letters[-1] == "]":
+                    data = str(self.addr_convert_data(letters))
                 self.echo(data)
                 self.pc += 2
 
@@ -255,8 +260,12 @@ class VM:
     def cpy(self, from_, to_):
         if from_ in ["reg_a", "reg_b", "reg_c", "bp", "sp"]:
             val = self.convert_keyword(from_)
-        elif (from_[0] == "[") and (from_[-1] == "]"):
+        elif type(from_) is int:
+            val = from_
+        elif type(from_) is str and (from_[0] == "[") and (from_[-1] == "]"):
             val = self.addr_convert_data(from_)
+        elif type(from_) is str and (from_[0] == "\"" and from_[-1] == "\""):
+            val = from_
         else:
             raise Exception(f"cpy: unknown src value({from_})")
 
