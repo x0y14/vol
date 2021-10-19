@@ -1,0 +1,23 @@
+[
+  "stmts",
+
+  [
+    "func", "main", [],
+    [
+      ["var", "me"],
+      ["set", "me", "\"john\""],
+      ["call", "say_hello", ["me", 18]],
+      ["var", "result"],
+      ["call_set", "result", ["say_hello", ["\"tom\"", 21]]],
+      ["print", "result"]
+    ]
+  ],
+  [
+    "func", "say_hello", ["your_name", "age"],
+    [
+      ["print", "your_name"],
+      ["print", "age"],
+      ["return", ["\"success\""]]
+    ]
+  ]
+]
