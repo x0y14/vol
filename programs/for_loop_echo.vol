@@ -4,7 +4,7 @@
 
 
 echo "start"
-push 5 # 引数, 3回ループ
+push 5 # 引数, 5回ループ
 call for_i_in_range_X # for関数を呼び出し
 add_sp 1 # spの位置修正
 echo "finish"

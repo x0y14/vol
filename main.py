@@ -6,23 +6,23 @@ from memory import *
 
 def main():
     # prepare compiler
-    filepath = sys.argv[1]
-    asm_path = sys.argv[2]
-    cpr = CodeGenerator(filepath)
-    cpr.convert()
-    cpr.mem_mapping()
-    code = cpr.codegen()
-    with open(asm_path, "w") as f:
+    in_filepath = sys.argv[1]
+    asm_out_path = sys.argv[2]
+    cgen = CodeGenerator(in_filepath)
+    cgen.convert()
+    cgen.mem_mapping()
+    code = cgen.codegen()
+    with open(asm_out_path, "w") as f:
         f.write(code)
-    mid = cpr.mid
-    label_mapping = cpr.mapping
+    mid = cgen.mid
+    label_mapping = cgen.mapping
 
     # prepare virtual machine
     # - create memory
     mem_size = 20
     mem = Memory(mem_size, mid, label_mapping)
     # init
-    vm = VM(asm_path, mem)
+    vm = VM(asm_out_path, mem)
 
     # lunch
     vm.start(step_debug=True, use_display=True)
